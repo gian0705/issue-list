@@ -65,10 +65,6 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
     }
   }, [isOpen, selectedRow]);
 
-  useEffect(() => {
-    getAllCommentsAndUpdates();
-  }, [status]);
-
   const handleBlurBg = () => {
     setIsOpenSidePane(false);
   };
@@ -105,6 +101,7 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
      */
 
     // updateIssueStatusById(selectedRow.uuid, event.target.value);
+    getAllCommentsAndUpdates();
   };
 
   const handleComment = (e) => {
