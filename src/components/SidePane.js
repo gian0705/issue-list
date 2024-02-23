@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import TextareaAutosize from "./TextareaAutosize";
+import Textarea from "@mui/joy/Textarea";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import Button from "@mui/material/Button";
@@ -13,6 +13,12 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { blueGrey, lightBlue } from "@mui/material/colors";
 import CommentList from "./CommentList";
+import {
+  createIssueCommentById,
+  getAllCommentsAndUpdatesByIssueId,
+  updateIssueStatusById,
+} from "../utils/issueListAPI";
+import { demoCommentsAndUpdatedPerIssue } from "../utils/demoIssueListRes";
 
 const blurBgStyle = {
   filter: "blur(30px)",
@@ -46,38 +52,71 @@ const personIconSx = {
   borderRadius: "50%",
 };
 
-const statusList = ["unreviewed", "in review", "ignore"];
-
-const txtPlaceholder = "Some notes from";
+const statusList = ["unreviewed", "in_review", "ignore"];
 
 const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
-  const [status, setStatus] = React.useState("");
+  const [status, setStatus] = useState("");
+  const [comment, setComment] = useState("");
+  const [allCommentsAndUpdates, setAllCommentsAndUpdates] = useState([]);
 
-  const tmpSelectedRowInfo = React.useMemo(
-    () => (isOpen ? selectedRow : {}),
-    [isOpen, selectedRow]
-  );
-
-  React.useEffect(() => {
-    if (isOpen && selectedRow?.status) {
-      setStatus(selectedRow.status);
+  useEffect(() => {
+    if (isOpen && selectedRow?.issue_status) {
+      setStatus(selectedRow.issue_status);
     }
   }, [isOpen, selectedRow]);
 
-  const handleChange = (event) => {
-    setStatus(event.target.value);
-  };
+  useEffect(() => {
+    getAllCommentsAndUpdates();
+  }, [status]);
 
   const handleBlurBg = () => {
     setIsOpenSidePane(false);
   };
 
+  const getAllCommentsAndUpdates = () => {
+    /**
+     * Usage:
+     */
+
+    // const res = getAllCommentsAndUpdatesByIssueId(selectedRow.uuid);
+
+    /**
+     * Usage:
+     * use res of API instead of demoCommentsAndUpdatedPerIssue
+     */
+
+    setAllCommentsAndUpdates(demoCommentsAndUpdatedPerIssue);
+  };
+
+  const onSubmitComment = () => {
+    /**
+     * Usage:
+     */
+
+    // createIssueCommentById(selectedRow.uuid, comment);
+    getAllCommentsAndUpdates();
+  };
+
+  const handleStatus = (event) => {
+    setStatus(event.target.value);
+
+    /**
+     * Usage:
+     */
+
+    // updateIssueStatusById(selectedRow.uuid, event.target.value);
+  };
+
+  const handleComment = (e) => {
+    setComment(e.target.value);
+  };
+
   const breadcrumbs = [
-    <Link underline="hover" key="1" color="inherit" href="/" onClick={() => {}}>
+    <Link underline="hover" key="1" color="inherit" onClick={() => {}}>
       All
     </Link>,
-    <Link underline="hover" key="2" color="inherit" href="/" onClick={() => {}}>
-      {selectedRow.project}
+    <Link underline="hover" key="2" color="inherit" onClick={() => {}}>
+      {selectedRow.project_name}
     </Link>,
     <Typography key="3" color="text.primary">
       {selectedRow.site}
@@ -122,7 +161,7 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
               <FormControl fullWidth>
                 <Select
                   value={status}
-                  onChange={handleChange}
+                  onChange={handleStatus}
                   sx={{ textTransform: "capitalize" }}
                 >
                   {statusList.map((e) => (
@@ -138,7 +177,9 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
               </FormControl>
             </Col>
             <Col xs={12}>
-              <TextareaAutosize placeholder={txtPlaceholder} />
+              <Box className="border border-2 border-secondary-subtle p-3 rounded ">
+                {"Some notes from"}
+              </Box>
             </Col>
             <Col className="mb-4 border-bottom border-2 border-secondary-subtle" />
           </Row>
@@ -148,15 +189,20 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
               <PersonIcon sx={personIconSx} />
             </Col>
             <Col xs={12} md={9}>
-              <TextareaAutosize
-                customBg={blueGrey[200]}
+              <Textarea
+                minRows={3}
+                maxRows={5}
+                sx={{ background: blueGrey[200] }}
                 placeholder="write your comment"
+                value={comment}
+                onChange={handleComment}
               />
             </Col>
             <Col xs={12} md={2} className="m-auto">
               <Button
                 variant="contained"
                 color="success"
+                onClick={onSubmitComment}
                 sx={{ minWidth: 20, minHeight: 20 }}
               >
                 <svg
@@ -172,7 +218,7 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
               </Button>
             </Col>
           </Row>
-          <CommentList />
+          <CommentList commentAndUpdateList={allCommentsAndUpdates} />
         </div>
       </div>
     </React.Fragment>

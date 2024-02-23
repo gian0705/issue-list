@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import MultipleSelectChip from "../components/MultipleSelectChip";
 import DateRangePickerValue from "../components/DateRangePickerValue";
@@ -6,13 +6,40 @@ import MissingDataTable from "../components/MissingDataTable";
 import SensorOutageTable from "../components/SensorOutageTable";
 import SidePane from "../components/SidePane";
 import useScrollBlock from "../hooks/useScrollBlock";
+import dayjs from "dayjs";
+import { getIssueListByDateRangeAndType } from "../utils/issueListAPI";
+import { demoMissingData } from "../utils/demoIssueListRes";
+
+const today = dayjs();
+const dateTwoWeeksAgo = dayjs().subtract(15, "day");
 
 const IssueListPage = () => {
-  const [isOpenSidePane, setIsOpenSidePane] = React.useState(false);
-  const [selectedRowInfo, setSelectedRowInfo] = React.useState({});
+  const [isOpenSidePane, setIsOpenSidePane] = useState(false);
+  const [selectedRowInfo, setSelectedRowInfo] = useState({});
   const [blockScroll, allowScroll] = useScrollBlock();
+  const [dateRange, setDateRange] = useState([dateTwoWeeksAgo, today]);
+  const [statuses, setStatuses] = useState([]);
+  const [missingData, setMissingData] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    /**
+     * Usage:
+     */
+
+    // const res = getIssueListByDateRangeAndType(
+    //   dayjs(dateRange[0]).format("YYYY-MM-dd"),
+    //   dayjs(dateRange[1]).format("YYYY-MM-dd"),
+    //   statuses
+    // );
+
+    /**
+     * Usage:
+     * use res of API instead of demoMissingData
+     */
+    setMissingData(demoMissingData);
+  }, [dateRange, statuses]);
+
+  useEffect(() => {
     if (isOpenSidePane) blockScroll();
     else allowScroll();
   }, [isOpenSidePane]);
@@ -30,10 +57,13 @@ const IssueListPage = () => {
         </p>
         <Row noGutters className="pt-4 gy-5">
           <Col md={6}>
-            <DateRangePickerValue />
+            <DateRangePickerValue
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+            />
           </Col>
           <Col md={6}>
-            <MultipleSelectChip />
+            <MultipleSelectChip statuses={statuses} setStatuses={setStatuses} />
           </Col>
           <Col xs={12} className="d-flex flex-row align-items-center">
             <div
@@ -43,7 +73,10 @@ const IssueListPage = () => {
             <p>Sites with missing data</p>
           </Col>
           <Col>
-            <MissingDataTable onSelectRow={handleMissingDataTableRow} />
+            <MissingDataTable
+              missingData={missingData}
+              onSelectRow={handleMissingDataTableRow}
+            />
           </Col>
           <Col xs={12} className="d-flex flex-row align-items-center">
             <div

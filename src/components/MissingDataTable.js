@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import dayjs from "dayjs";
 
 const headLabels = [
   "Project",
@@ -15,20 +16,16 @@ const headLabels = [
   "Status",
 ];
 
-const createData = (project, site, data_recovery, last_timestamp, status) => {
-  return { project, site, data_recovery, last_timestamp, status };
-};
-
-const rows = [
-  createData("Argentina", "Rosco", 0, "2021-01-29", "unreviewed"),
-  createData("Argentina", "Newell", 0, "2021-01-29", "unreviewed"),
-  createData("Argentina", "Lacker", 55.5, "2021-01-29", "unreviewed"),
-  createData("Peru", "Mila", 0, "2021-01-29", "in review"),
+const dataKeys = [
+  "project_name",
+  "site_name",
+  "data_covery",
+  "updated_at",
+  "issue_status",
 ];
-
-const MissingDataTable = ({ onSelectRow }) => {
+const MissingDataTable = ({ missingData, onSelectRow }) => {
   const handleClick = (i) => {
-    onSelectRow(rows[i]);
+    onSelectRow(missingData[i]);
   };
 
   return (
@@ -44,7 +41,7 @@ const MissingDataTable = ({ onSelectRow }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+          {missingData.map((row, index) => (
             <TableRow
               hover
               key={index}
@@ -54,7 +51,7 @@ const MissingDataTable = ({ onSelectRow }) => {
               }}
               onClick={() => handleClick(index)}
             >
-              {Object.keys(row).map((key, i) => (
+              {dataKeys.map((key, i) => (
                 <TableCell
                   key={i}
                   align={i === 2 ? "center" : "left"}
@@ -62,7 +59,7 @@ const MissingDataTable = ({ onSelectRow }) => {
                   scope={i === 0 ? "row" : null}
                   sx={{ textTransform: "capitalize" }}
                 >
-                  {row[key]}
+                  {i === 3 ? dayjs(row[key]).format("YYYY-MM-DD") : row[key]}
                 </TableCell>
               ))}
             </TableRow>

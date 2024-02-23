@@ -1,15 +1,11 @@
 import * as React from "react";
-import dayjs from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 
-const today = dayjs();
-const dateTwoWeeksAgo = dayjs().subtract(15, "day");
-
-const DateRangePickerValue = () => {
-  const [value, setValue] = React.useState([dateTwoWeeksAgo, today]);
+const DateRangePickerValue = ({ dateRange, setDateRange }) => {
+  const [value, setValue] = React.useState(dateRange);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DateRangePicker"]}>
@@ -19,6 +15,7 @@ const DateRangePickerValue = () => {
           defaultValue={value}
           value={value}
           onChange={(newValue) => setValue(newValue)}
+          onClose={() => setDateRange(value)}
         />
       </DemoContainer>
     </LocalizationProvider>

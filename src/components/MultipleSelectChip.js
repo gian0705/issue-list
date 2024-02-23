@@ -19,7 +19,7 @@ const MenuProps = {
   },
 };
 
-const statusList = ["unreviewed", "in review", "ignore"];
+const statusList = ["unreviewed", "in_review", "ignore"];
 
 const getStyles = (status, selectedStatus, theme) => {
   return {
@@ -30,9 +30,9 @@ const getStyles = (status, selectedStatus, theme) => {
   };
 };
 
-const MultipleSelectChip = () => {
+const MultipleSelectChip = ({ statuses, setStatuses }) => {
   const theme = useTheme();
-  const [selectedStatuses, setSelectedStatuses] = React.useState([]);
+  const [selectedStatuses, setSelectedStatuses] = React.useState(statuses);
 
   const handleChange = (event) => {
     const {
@@ -54,6 +54,7 @@ const MultipleSelectChip = () => {
           multiple
           value={selectedStatuses}
           onChange={handleChange}
+          onClose={() => setStatuses(selectedStatuses)}
           input={<OutlinedInput id="select-multiple-chip" label="Status" />}
           renderValue={(selected) => (
             <Box

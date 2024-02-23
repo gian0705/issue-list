@@ -1761,6 +1761,20 @@
   dependencies:
     "@babel/runtime" "^7.23.9"
 
+"@mui/joy@^5.0.0-beta.28":
+  version "5.0.0-beta.28"
+  resolved "https://registry.yarnpkg.com/@mui/joy/-/joy-5.0.0-beta.28.tgz#e820cd23261c4111f8dc4e9c9c43da5a6eed9ac5"
+  integrity sha512-K3a2GhYix+oOGkJwDn3+SLL1+Z8ZXwJyQaEZPzQllMvU8fn4JyfFN4lGukJScVzTR0mWDG7MPxHsP0ozVNi8Mg==
+  dependencies:
+    "@babel/runtime" "^7.23.9"
+    "@mui/base" "5.0.0-beta.36"
+    "@mui/core-downloads-tracker" "^5.15.10"
+    "@mui/system" "^5.15.9"
+    "@mui/types" "^7.2.13"
+    "@mui/utils" "^5.15.9"
+    clsx "^2.1.0"
+    prop-types "^15.8.1"
+
 "@mui/material@^5.15.10":
   version "5.15.10"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.15.10.tgz#6533ba53edbd0790dbc5bb7e9e173f6069ffd7e6"
@@ -10448,10 +10462,10 @@ react-dropzone@^11.3.4:
     file-selector "^0.4.0"
     prop-types "^15.8.1"
 
-react-error-overlay@^6.0.9:
-  version "6.0.11"
-  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
-  integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
+react-error-overlay@6.0.9, react-error-overlay@^6.0.9:
+  version "6.0.9"
+  resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
+  integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
 react-fast-compare@^3.1.1:
   version "3.2.2"

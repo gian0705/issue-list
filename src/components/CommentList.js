@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import { blueGrey, lightBlue } from "@mui/material/colors";
+import dayjs from "dayjs";
 
 const commentListSx = {
   display: "flex",
@@ -33,34 +34,55 @@ const verticalLineSx = {
   marginTop: "-5px",
 };
 
-const CommentList = () => {
-  return (
-    <Box sx={commentListSx}>
-      <Box sx={commentSx}>
-        <PersonIcon sx={personIconSx} />
-        <Box sx={commentDetailSx}>
-          <p>{"2021-01-08"}</p>
-          <p>{"user@email.com update the status to 'In review'"}</p>
-        </Box>
-      </Box>
+const CommentList = ({ commentAndUpdateList }) => {
+  const VerticalLine = (list, i) =>
+    list.length !== 1 &&
+    i < list.length - 1 && (
       <Box
         className="border-start border-2 border-secondary-subtle"
         sx={verticalLineSx}
       />
-      <Box sx={commentSx}>
-        <PersonIcon sx={personIconSx} />
-        <Box sx={commentDetailSx}>
-          <p>{"2021-01-08"}</p>
-          <Box
-            className="border border-2 border-secondary-subtle p-3 rounded "
-            sx={{ background: blueGrey[50], fontStyle: "italic" }}
-          >
-            {
-              "Reviewed issue and found the communications had gone down. Continuing diagnosis."
-            }
-          </Box>
-        </Box>
-      </Box>
+    );
+  return (
+    <Box sx={commentListSx}>
+      {commentAndUpdateList.length
+        ? commentAndUpdateList.map((data, i) => (
+            <div key={i}>
+              {data.new_issue_status && (
+                <>
+                  <Box sx={commentSx}>
+                    <PersonIcon sx={personIconSx} />
+                    <Box sx={commentDetailSx}>
+                      <p>{dayjs(data.updated_at).format("YYYY-MM-DD")}</p>
+                      <p>{`${data.created_by} update the status to ${data.new_issue_status}`}</p>
+                    </Box>
+                  </Box>
+
+                  {VerticalLine(commentAndUpdateList, i)}
+                </>
+              )}
+
+              {data.comments && (
+                <>
+                  <Box sx={commentSx}>
+                    <PersonIcon sx={personIconSx} />
+                    <Box sx={commentDetailSx}>
+                      <p>{dayjs(data.updated_at).format("YYYY-MM-DD")}</p>
+                      <p>{`${data.created_by} commented`}</p>
+                      <Box
+                        className="border border-2 border-secondary-subtle p-3 rounded "
+                        sx={{ background: blueGrey[50], fontStyle: "italic" }}
+                      >
+                        {data.comments}
+                      </Box>
+                    </Box>
+                  </Box>
+                  {VerticalLine(commentAndUpdateList, i)}
+                </>
+              )}
+            </div>
+          ))
+        : null}
     </Box>
   );
 };
