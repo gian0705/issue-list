@@ -180,8 +180,8 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
             </Col>
             <Col className="mb-4 border-bottom border-2 border-secondary-subtle" />
           </Row>
-          <p className="pb-4">{"Comments & issue history"}</p>
-          <Row noGutters>
+          <p className="pb-3">{"Comments & issue history"}</p>
+          <Row noGutters className="gy-2">
             <Col xs={12} md={1}>
               <PersonIcon sx={personIconSx} />
             </Col>
@@ -189,7 +189,7 @@ const SidePane = ({ isOpen, selectedRow, setIsOpenSidePane }) => {
               <Textarea
                 minRows={3}
                 maxRows={5}
-                sx={{ background: blueGrey[200] }}
+                sx={{ background: blueGrey[200], marginBottom: "10px" }}
                 placeholder="write your comment"
                 value={comment}
                 onChange={handleComment}
